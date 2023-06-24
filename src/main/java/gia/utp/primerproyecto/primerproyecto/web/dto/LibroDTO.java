@@ -1,4 +1,4 @@
-package gia.utp.primerproyecto.primerproyecto;
+package gia.utp.primerproyecto.primerproyecto.web.dto;
 
 
 import lombok.AllArgsConstructor;
