@@ -1,23 +1,15 @@
-package gia.utp.primerproyecto.primerproyecto.web.dto;
-
+package gia.utp.primerproyecto.primerproyecto.web.dto.response;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
-public class LibroDTO {
-
-    private Integer id;
+public class LibroEditorialResponse {
 
     private String nombre;
 
     private String autor;
-
-    private String editorial;
-
 }

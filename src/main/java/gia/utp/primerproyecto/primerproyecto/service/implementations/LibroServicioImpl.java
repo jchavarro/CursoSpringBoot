@@ -1,28 +1,51 @@
 package gia.utp.primerproyecto.primerproyecto.service.implementations;
 
+import gia.utp.primerproyecto.primerproyecto.model.entities.LibroEntity;
+import gia.utp.primerproyecto.primerproyecto.model.repository.LibroRepository;
 import gia.utp.primerproyecto.primerproyecto.service.interfaces.LibroServicio;
 import gia.utp.primerproyecto.primerproyecto.service.interfaces.LibroVentaFacade;
 import gia.utp.primerproyecto.primerproyecto.web.dto.LibroDTO;
-import lombok.AllArgsConstructor;
+import gia.utp.primerproyecto.primerproyecto.web.dto.response.LibroEditorialResponse;
+import gia.utp.primerproyecto.primerproyecto.web.exceptions.types.BadRequestException;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Service
 public class LibroServicioImpl implements LibroServicio, LibroVentaFacade {
 
-    private List<LibroDTO> libroDTOS;
+    @Autowired
+    private LibroRepository libroRepository;
+
+    @Autowired
+    private ModelMapper modelMapper;
 
     @Override
     public LibroDTO crearLibro(LibroDTO libroDTO) {
-        libroDTOS.add(libroDTO);
-        return libroDTOS.get(libroDTO.getId());
+        if(libroDTO.getNombre().isEmpty()) throw new BadRequestException("Los libros no pueden tener el nombre vacio");
+        LibroEntity libroEntity = modelMapper.map(libroDTO, LibroEntity.class);
+        libroEntity = libroRepository.save(libroEntity);
+        return modelMapper.map(libroEntity, LibroDTO.class);
     }
 
     @Override
     public LibroDTO obtenerLibro(Integer id) {
-        return null;
+        LibroEntity libroEntity = libroRepository.findById(id).get();
+        return modelMapper.map(libroEntity, LibroDTO.class);
+    }
+
+    @Override
+    public List<LibroEditorialResponse> obtenerLibrosPorEditorial(String edi) {
+        List<LibroEntity> libroEntities = libroRepository.findAllByEditorial(edi)
+                .orElseThrow(() -> new BadRequestException("No existen libros bajo esta editorial" + edi));
+        List<LibroEditorialResponse> responseList = libroEntities.stream()
+                .map(libroEntity -> modelMapper.map(libroEntity, LibroEditorialResponse.class))
+                .collect(Collectors.toList());
+        return responseList;
     }
 
     @Override
