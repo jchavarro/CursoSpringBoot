@@ -6,7 +6,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,30 +13,30 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 @Entity
-@Table(name = "libro")
-public class LibroEntity {
+@Table(name = "editorial")
+public class EditorialEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "nombre_libro")
-    private String nombreLibro;
+    @Column(name = "nombre_editorial")
+    private String nombreEditorial;
 
-    @Column(name = "autor_libro")
-    private String autorLibro;
+    private String direccion;
 
-    @ManyToOne
+    @OneToMany
     @JoinColumn(name = "editorial_id")
-    @JsonIgnoreProperties("libro")
-    private EditorialEntity editorial;
+    @JsonIgnoreProperties("editorial")
+    private List<LibroEntity> libroEntities;
 
 }

@@ -1,7 +1,6 @@
 package gia.utp.primerproyecto.primerproyecto.web.controllers;
 
-import gia.utp.primerproyecto.primerproyecto.service.implementations.LibroServicioImpl;
-import gia.utp.primerproyecto.primerproyecto.service.interfaces.LibroServicio;
+import gia.utp.primerproyecto.primerproyecto.service.interfaces.LibroService;
 import gia.utp.primerproyecto.primerproyecto.web.dto.LibroDTO;
 import gia.utp.primerproyecto.primerproyecto.web.dto.response.LibroEditorialResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +20,11 @@ import java.util.List;
 public class LibrosController {
 
     @Autowired
-    private LibroServicio libroServicio;
+    private LibroService libroService;
 
     @PostMapping("crearLibro")
     public ResponseEntity<LibroDTO> crearLibro(@RequestBody LibroDTO libroDTO) {
-        return new ResponseEntity<>(libroServicio.crearLibro(libroDTO), HttpStatus.CREATED);
+        return new ResponseEntity<>(libroService.crearLibro(libroDTO), HttpStatus.CREATED);
     }
 
     /**
@@ -35,14 +34,13 @@ public class LibrosController {
      */
     @GetMapping("obtenerLibro")
     public ResponseEntity<LibroDTO> obtenerLibro(@RequestParam("id") Integer id) {
-        return new ResponseEntity<>(libroServicio.obtenerLibro(id), HttpStatus.FOUND);
+        return new ResponseEntity<>(libroService.obtenerLibro(id), HttpStatus.FOUND);
     }
 
     @GetMapping("obtenerLibrosPorEditorial")
     public ResponseEntity<List<LibroEditorialResponse>> obtenerLibrosPorEditorial(
             @RequestParam("editorial") String edi) {
-        return new ResponseEntity<>(libroServicio.obtenerLibrosPorEditorial(edi), HttpStatus.FOUND);
+        return new ResponseEntity<>(libroService.obtenerLibrosPorEditorial(edi), HttpStatus.FOUND);
     }
-
 
 }

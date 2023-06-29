@@ -5,7 +5,7 @@ import gia.utp.primerproyecto.primerproyecto.web.dto.response.LibroEditorialResp
 
 import java.util.List;
 
-public interface LibroServicio {
+public interface LibroService {
 
     LibroDTO crearLibro(LibroDTO libroDTO);
 

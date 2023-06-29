@@ -1,6 +1,5 @@
 package gia.utp.primerproyecto.primerproyecto.web.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -8,16 +7,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@Builder
 @NoArgsConstructor
-public class LibroDTO {
+@Builder
+public class EditorialDTO {
 
     private Integer id;
 
-    private String nombre;
+    private String nombreEditorial;
 
-    private String autor;
-
-    private EditorialDTO editorial;
+    private String direccion;
 
 }

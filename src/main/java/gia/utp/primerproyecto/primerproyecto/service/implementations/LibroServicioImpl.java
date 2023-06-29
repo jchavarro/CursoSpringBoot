@@ -2,8 +2,9 @@ package gia.utp.primerproyecto.primerproyecto.service.implementations;
 
 import gia.utp.primerproyecto.primerproyecto.model.entities.LibroEntity;
 import gia.utp.primerproyecto.primerproyecto.model.repository.LibroRepository;
-import gia.utp.primerproyecto.primerproyecto.service.interfaces.LibroServicio;
-import gia.utp.primerproyecto.primerproyecto.service.interfaces.LibroVentaFacade;
+import gia.utp.primerproyecto.primerproyecto.service.interfaces.LibroService;
+import gia.utp.primerproyecto.primerproyecto.service.interfaces.adapter.EditorialAdapter;
+import gia.utp.primerproyecto.primerproyecto.web.dto.EditorialDTO;
 import gia.utp.primerproyecto.primerproyecto.web.dto.LibroDTO;
 import gia.utp.primerproyecto.primerproyecto.web.dto.response.LibroEditorialResponse;
 import gia.utp.primerproyecto.primerproyecto.web.exceptions.types.BadRequestException;
@@ -11,12 +12,11 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class LibroServicioImpl implements LibroServicio, LibroVentaFacade {
+public class LibroServicioImpl implements LibroService {
 
     @Autowired
     private LibroRepository libroRepository;
@@ -24,9 +24,16 @@ public class LibroServicioImpl implements LibroServicio, LibroVentaFacade {
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private EditorialAdapter editorialAdapter;
+
     @Override
     public LibroDTO crearLibro(LibroDTO libroDTO) {
         if(libroDTO.getNombre().isEmpty()) throw new BadRequestException("Los libros no pueden tener el nombre vacio");
+        if(libroDTO.getEditorial().getId() == null) {
+            EditorialDTO editorialDTO = editorialAdapter.crearEditorial(libroDTO.getEditorial());
+            libroDTO.setEditorial(editorialDTO);
+        }
         LibroEntity libroEntity = modelMapper.map(libroDTO, LibroEntity.class);
         libroEntity = libroRepository.save(libroEntity);
         return modelMapper.map(libroEntity, LibroDTO.class);
@@ -48,13 +55,4 @@ public class LibroServicioImpl implements LibroServicio, LibroVentaFacade {
         return responseList;
     }
 
-    @Override
-    public LibroDTO venderLibro(Integer idLibro, Double precioLibro) {
-        return null;
-    }
-
-    @Override
-    public LibroDTO devolverLibro(Integer idVenta) {
-        return null;
-    }
 }
