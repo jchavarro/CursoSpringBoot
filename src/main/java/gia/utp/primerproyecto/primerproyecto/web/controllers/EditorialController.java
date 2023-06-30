@@ -27,6 +27,7 @@ public class EditorialController {
 
     @GetMapping("obtenerEditorial")
     public ResponseEntity<EditorialResponse> obtenerEditorial(@RequestParam Integer id) {
-        return new ResponseEntity<>(editorialService.obtenerEditorial(id), HttpStatus.FOUND);
+        EditorialResponse editorialResponse = editorialService.obtenerEditorial(id);
+        return new ResponseEntity<>(editorialResponse, HttpStatus.FOUND);
     }
 }

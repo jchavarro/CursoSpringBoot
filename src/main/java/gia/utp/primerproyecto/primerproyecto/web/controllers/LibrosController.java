@@ -43,4 +43,11 @@ public class LibrosController {
         return new ResponseEntity<>(libroService.obtenerLibrosPorEditorial(edi), HttpStatus.FOUND);
     }
 
+    @GetMapping("obtenerLibroPorNombres")
+    public ResponseEntity<List<LibroDTO>> obtenerLibroPorNombres(
+            @RequestParam("nombreLibro") String nombreLibro,
+            @RequestParam("nombreAutor") String nombreAutor) {
+        return new ResponseEntity<>(libroService.obtenerLibroPorNombres(nombreLibro, nombreAutor), HttpStatus.FOUND);
+    }
+
 }

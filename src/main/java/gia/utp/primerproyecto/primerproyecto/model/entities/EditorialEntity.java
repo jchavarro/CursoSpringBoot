@@ -5,10 +5,14 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +21,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -34,9 +39,12 @@ public class EditorialEntity {
 
     private String direccion;
 
-    @OneToMany
-    @JoinColumn(name = "editorial_id")
-    @JsonIgnoreProperties("editorial")
-    private List<LibroEntity> libroEntities;
+    @OneToMany(fetch = FetchType.LAZY, orphanRemoval = true)
+    private List<LibroEntity> libros;
 
+    public EditorialEntity(Integer id, String nombreEditorial, String direccion) {
+        this.id = id;
+        this.nombreEditorial = nombreEditorial;
+        this.direccion = direccion;
+    }
 }

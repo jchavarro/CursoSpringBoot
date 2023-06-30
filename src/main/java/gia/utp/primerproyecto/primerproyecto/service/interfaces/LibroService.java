@@ -1,5 +1,6 @@
 package gia.utp.primerproyecto.primerproyecto.service.interfaces;
 
+import gia.utp.primerproyecto.primerproyecto.model.entities.LibroEntity;
 import gia.utp.primerproyecto.primerproyecto.web.dto.LibroDTO;
 import gia.utp.primerproyecto.primerproyecto.web.dto.response.LibroEditorialResponse;
 
@@ -12,4 +13,6 @@ public interface LibroService {
     LibroDTO obtenerLibro(Integer id);
 
     List<LibroEditorialResponse> obtenerLibrosPorEditorial(String edi);
+
+    List<LibroDTO> obtenerLibroPorNombres(String nombreLibro, String nombreAutor);
 }

@@ -20,6 +20,6 @@ public class EditorialResponse {
 
     private String direccion;
 
-    private List<LibroDTO> libroDTOS;
+    private List<LibroDTO> libros;
 
 }

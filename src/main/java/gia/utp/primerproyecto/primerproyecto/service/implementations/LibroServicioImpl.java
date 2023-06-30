@@ -12,6 +12,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,9 +28,11 @@ public class LibroServicioImpl implements LibroService {
     @Autowired
     private EditorialAdapter editorialAdapter;
 
+    @Transactional
     @Override
     public LibroDTO crearLibro(LibroDTO libroDTO) {
-        if(libroDTO.getNombre().isEmpty()) throw new BadRequestException("Los libros no pueden tener el nombre vacio");
+        if(libroDTO.getNombre().isEmpty())
+            throw new BadRequestException("Los libros no pueden tener el nombre vacio");
         if(libroDTO.getEditorial().getId() == null) {
             EditorialDTO editorialDTO = editorialAdapter.crearEditorial(libroDTO.getEditorial());
             libroDTO.setEditorial(editorialDTO);
@@ -53,6 +56,14 @@ public class LibroServicioImpl implements LibroService {
                 .map(libroEntity -> modelMapper.map(libroEntity, LibroEditorialResponse.class))
                 .collect(Collectors.toList());
         return responseList;
+    }
+
+    @Override
+    public List<LibroDTO> obtenerLibroPorNombres(String nombreLibro, String nombreAutor) {
+        return libroRepository.obtenerLibroPorNombres(nombreLibro, nombreAutor)
+                .orElseThrow(() -> new BadRequestException("No existe un libro con los nombres relacionados"))
+                .stream().map(libroEntity -> modelMapper.map(libroEntity, LibroDTO.class))
+                .collect(Collectors.toList());
     }
 
 }
